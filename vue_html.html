@@ -7,10 +7,10 @@
     <title>Document</title>
     <style>
       .table-ele-container {
-          position: fixed;
-          z-index: -1;
-          left: 99999px;
-          width: 30330px;
+        position: fixed;
+        z-index: -1;
+        left: 99999px;
+        width: 30330px;
       }
       .table-ele {
         border: solid 1px;
@@ -23,7 +23,10 @@
       table th {
         text-align: center;
       }
-      .left-cellular, .middle-cellular, .right-cellular, .jiange {
+      .left-cellular,
+      .middle-cellular,
+      .right-cellular,
+      .jiange {
         padding: 3px 20px;
       }
       .left-cellular {
@@ -49,7 +52,6 @@
       .form-ele .li-item {
         border-bottom: 1px solid;
       }
-      
     </style>
   </head>
   <body>
@@ -61,14 +63,14 @@
             <div class="flex-box">
               <span class="nowrap">{{item.name}}</span>
               <div class="flex1 text-right">
-                <input type="text" v-model="item.cellularData"/>
+                <input type="text" v-model="item.cellularData" v-on:change="formInputChangeEvent"/>
               </div>
             </div>
           </li>
         </ul>
       </div>
       <div class="table-ele-container">
-        <div style="padding: 20px; display: inline-block;" ref="reportEle">
+        <div style="padding: 20px; display: inline-block" ref="reportEle">
           <table class="table-ele">
             <thead>
               <tr>
@@ -94,9 +96,9 @@
         </div>
       </div>
       <div>
-        <button v-on:click="createImage">生成图片吧</button>
+        <span v-show="isChange">检测到你修改了源数据 </span>
+        <button v-on:click="createImage"><span v-show="isChange">重新</span>生成图片吧</button>
       </div>
-
       <div v-show="imgSrc">
         <div>
           <a v-bind:href="imgSrc" download="信息.png" v-on:click="intercept">下载生成的图片</a>
@@ -194,7 +196,7 @@
         methods: {
           inputEvent(e) {
             this.$emit('input', e.target.value);
-          }
+          },
         },
       });
       const app = new Vue({
@@ -206,6 +208,7 @@
             yong: {},
             rowData,
             imgSrc: null,
+            isChange: false
           };
         },
         mounted() {
@@ -227,6 +230,10 @@
               isIPhone && e.preventDefault();
               alert('苹果手机限制得很严，不支持下载。请用电脑或者安卓手机才能下载图片');
             }
+          },
+          formInputChangeEvent() {
+            this.isChange = true;
+            console.log(this.isChange);
           }
         },
       });
