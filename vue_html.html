@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .table-ele-container {
+        /* position: fixed;
+        z-index: -1;
+        left: 99999px;
+        width: 30330px; */
+      }
+      .table-ele {
+        border: solid 1px;
+        border-collapse: collapse;
+      }
+      table td {
+        border: solid 1px;
+        text-align: center;
+      }
+      table th {
+        text-align: center;
+      }
+      .left-cellular, .middle-cellular, .right-cellular, .jiange {
+        padding: 3px 20px;
+      }
+      .left-cellular {
+        font-weight: 600;
+        width: 80px;
+      }
+      .text-right {
+        text-align: right;
+      }
+      .flex-box {
+        display: flex;
+      }
+      .flex1 {
+        flex: 1;
+      }
+      .form-ele {
+        width: 50%;
+      }
+      .form-ele .li-item {
+        border-bottom: 1px solid;
+      }
+      
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <div>
+        <ul class="form-ele">
+          <li v-for="item in rowData" class="li-item">
+            <h4 v-if="item.n1">{{item.n1}}</h4>
+            <div class="flex-box">
+              <span>{{item.name}}</span>
+              <div class="flex1 text-right">
+                <input type="text" v-model="item.cellularData"/>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="table-ele-container">
+        <div style="padding: 20px; display: inline-block;" ref="reportEle">
+          <table class="table-ele">
+            <thead>
+              <tr>
+                <th colspan="3" class="jiange">反洗钱信息登记表</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="item in rowData">
+                <td :rowspan="item.n1 && item.rowspan" v-if="item.n1"><div class="left-cellular">{{item.n1}}</div></td>
+                <td><div class="middle-cellular">{{item.name}}</div></td>
+                <td><div class="right-cellular">{{item.cellularData}}</div></td>
+              </tr>
+              <tr>
+                <td colspan="3">
+                  <div class="text-right jiange">
+                    <div>申请人签名: 张三</div>
+                    <div>日期: 2022-4-17</div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div>
+        <button v-on:click="createImage">生成图片吧</button>
+      </div>
+
+      <div v-show="imgSrc">
+        下面是base64图片
+        <div><img v-bind:src="imgSrc" alt="" /></div>
+      </div>
+      <!-- <table>
+        <tr>
+          <td rowspan="3">被保险反洗钱信息</td>
+          <td>姓名</td>
+          <td>张三</td>
+        </tr>
+        <tr>
+          <td>证件类型</td>
+          <td>身份证</td>
+        </tr>
+        <tr>
+          <td>证件号</td>
+          <td>340826199506155293</td>
+        </tr>
+
+        <tr>
+          <td rowspan="3">被保险反洗钱信息</td>
+          <td>姓名</td>
+          <td>张三</td>
+        </tr>
+        <tr>
+          <td>证件类型</td>
+          <td>身份证</td>
+        </tr>
+        <tr>
+          <td>证件号</td>
+          <td>340826199506155293</td>
+        </tr>
+      </table> -->
+
+      <!-- <ul>
+        <li v-for="item in arr1">
+          <h3>{{item.text}}</h3>
+          <div>
+            <ul>
+              <li v-for="(childItem, childIndex) in arr2">
+                {{childItem.text}}
+                <div>
+                  <duan-app v-model="childItem.gugu"></duan-app>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </li>
+      </ul> -->
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.min.js"></script>
+    <script>
+      const arr1 = [
+        { text: 'Learn JavaScript', done: false },
+        { text: 'Learn Vue', done: false },
+        { text: 'Play around in JSFiddle', done: true },
+        { text: 'Build something awesome', done: true },
+      ];
+
+      const arr2 = [
+        { text: 'Learn JavaScript', done: false },
+        { text: 'Learn Vue', done: false },
+        { text: 'Play around in JSFiddle', done: true },
+        { text: 'Build something awesome', done: true },
+      ];
+
+      const rowData = [
+        { n1: '被保险反洗钱信息', rowspan: 6, name: '姓名', cellularData: '张三' },
+        { name: '证件类型', cellularData: '身份证' },
+        { name: '证件号', cellularData: '110101199003074610' },
+        { name: '职业', cellularData: '无业游民' },
+        { name: '常住地址', cellularData: '上海市黄浦江' },
+        { name: '手机号/固话', cellularData: '13988888888' },
+        { n1: '领款人反洗钱信息', rowspan: 8, name: '与被保人关系', cellularData: '父子' },
+        { name: '与投保人关系', cellularData: '父子' },
+        { name: '姓名', cellularData: '王二' },
+        { name: '证件类型', cellularData: '身份证' },
+        { name: '证件号', cellularData: '110101199003074610' },
+        { name: '职业', cellularData: '无业游民' },
+        { name: '常住地址', cellularData: '上海市黄浦江' },
+        { name: '手机号/固话', cellularData: '13988888888' },
+      ];
+
+      Vue.component('duan-app', {
+        props: ['value'],
+        template: `
+            <div>
+              <input type="text" v-bind:value="value" v-on:input="inputEvent">
+            </div>
+            `,
+        methods: {
+          inputEvent(e) {
+            this.$emit('input', e.target.value);
+          },
+        },
+      });
+      const app = new Vue({
+        el: '#app',
+        data() {
+          return {
+            arr1: arr1,
+            arr2,
+            yong: {},
+            rowData,
+            imgSrc: null,
+          };
+        },
+        mounted() {
+          this.yong.sos = '就有底';
+          this.$set(this.yong, 'sos', 3993);
+          console.log(this.yong);
+        },
+        methods: {
+          createImage() {
+            const reportEle = this.$refs.reportEle;
+            // tableEle.style.width = 882 + 'px'; //为了解决定位后，导出图片宽度的问题
+            html2canvas(reportEle, { scale: 1 }).then((canvas) => {
+              const base64Data = canvas.toDataURL('image/png');
+              this.imgSrc = base64Data;
+            });
+          },
+        },
+      });
+    </script>
+  </body>
+</html>
