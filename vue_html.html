@@ -99,7 +99,7 @@
 
       <div v-show="imgSrc">
         <div>
-          <a v-bind:href="imgSrc" download="信息.png">下载生成的图片</a>
+          <a v-bind:href="imgSrc" download="信息.png" v-on:click="intercept">下载生成的图片</a>
         </div>
         下面是base64图片
         <div><img v-bind:src="imgSrc" alt="" /></div>
@@ -194,7 +194,7 @@
         methods: {
           inputEvent(e) {
             this.$emit('input', e.target.value);
-          },
+          }
         },
       });
       const app = new Vue({
@@ -221,6 +221,13 @@
               this.imgSrc = base64Data;
             });
           },
+          intercept(e) {
+            const isIPhone = navigator.userAgent.includes('iPhone');
+            if (isIPhone) {
+              isIPhone && e.preventDefault();
+              alert('苹果手机限制得很严，不支持下载。请用电脑或者安卓手机才能下载图片');
+            }
+          }
         },
       });
     </script>
