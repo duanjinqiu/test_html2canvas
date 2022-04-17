@@ -7,10 +7,10 @@
     <title>Document</title>
     <style>
       .table-ele-container {
-        /* position: fixed;
-        z-index: -1;
-        left: 99999px;
-        width: 30330px; */
+          position: fixed;
+          z-index: -1;
+          left: 99999px;
+          width: 30330px;
       }
       .table-ele {
         border: solid 1px;
@@ -39,8 +39,12 @@
       .flex1 {
         flex: 1;
       }
+      .nowrap {
+        white-space: nowrap;
+      }
       .form-ele {
         width: 50%;
+        min-width: 330px;
       }
       .form-ele .li-item {
         border-bottom: 1px solid;
@@ -55,7 +59,7 @@
           <li v-for="item in rowData" class="li-item">
             <h4 v-if="item.n1">{{item.n1}}</h4>
             <div class="flex-box">
-              <span>{{item.name}}</span>
+              <span class="nowrap">{{item.name}}</span>
               <div class="flex1 text-right">
                 <input type="text" v-model="item.cellularData"/>
               </div>
@@ -94,6 +98,9 @@
       </div>
 
       <div v-show="imgSrc">
+        <div>
+          <a v-bind:href="imgSrc" download="信息.png">下载生成的图片</a>
+        </div>
         下面是base64图片
         <div><img v-bind:src="imgSrc" alt="" /></div>
       </div>
@@ -209,7 +216,6 @@
         methods: {
           createImage() {
             const reportEle = this.$refs.reportEle;
-            // tableEle.style.width = 882 + 'px'; //为了解决定位后，导出图片宽度的问题
             html2canvas(reportEle, { scale: 1 }).then((canvas) => {
               const base64Data = canvas.toDataURL('image/png');
               this.imgSrc = base64Data;
